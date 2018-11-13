@@ -76,8 +76,39 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }
+
+
+    /**
+     * Returns results of searching the jobs data by value in any column, using
+     * inclusion of the search term.
+     *
+     * For example, searching for term "Florida" will include results
+     * with "South Florida" in location and "Florida Power and Light" in employer name, etc.
+     *
+     * @param value Value to search in each column
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> job : allJobs) {
+
+            for (String jobAttribute : job.keySet()) {
+                if (job.get(jobAttribute).toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(job);
+                    break;
+                }
             }
         }
 
